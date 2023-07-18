@@ -8,15 +8,26 @@ require('./db');
 // Handles http requests (express is node js framework)
 // https://www.npmjs.com/package/express
 const express = require('express');
+const hbs = require('hbs');
+const path = require('path');
+
 
 // Handles the handlebars
 // https://www.npmjs.com/package/hbs
-const hbs = require('hbs');
+
+
+//hbs.registerPartials(path.join(__dirname, 'views/partials/'));
 
 const app = express();
+app.set('view engine', 'hbs');
+
+// Set the views directory
+app.set('views', path.join(__dirname, 'views'));
 
 // ℹ️ This function is getting exported from the config folder. It runs most middlewares
 require('./config')(app);
+
+
 
 // default value for title local
 const projectName = 'lab-movies-celebrities';
@@ -28,8 +39,8 @@ app.locals.title = `${capitalized(projectName)}- Generated with Ironlauncher`;
 const index = require('./routes/index');
 app.use('/', index);
 
-const moviesRoute = require('./routes/movies.routes');
-app.use('/', moviesRoute);
+const movieRoute = require('./routes/movies.routes');
+app.use('/', movieRoute);
 
 const celebRoute = require('./routes/celebrities.routes');
 app.use('/', celebRoute);
